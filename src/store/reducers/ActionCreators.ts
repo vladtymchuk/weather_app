@@ -22,16 +22,21 @@ export const fetchCities = (cities: string[] | null) => async (dispatch: AppDisp
 export const addNewCityInfo = (name: string) => async (dispatch: AppDispatch) => {
     try {
         const res = await axios.get<ICityWeather>(`https://api.openweathermap.org/data/2.5/weather?q=${name}&appid=2010ac909e465fe6f065bb7d66338117`)
-        dispatch(cardListSlice.actions.addCard(res.data))
+        // dispatch(cardListSlice.actions.addCard(res.data))
         if (localStorage.getItem("cities") === null) {
             localStorage.setItem('cities', JSON.stringify([name]))
+            dispatch(cardListSlice.actions.addCard(res.data))
         } else {
             let cities = JSON.parse(localStorage.cities)
-            cities.push(name)
-            localStorage
-                .setItem("cities",
-                    JSON.stringify(cities)
-                )
+            console.log(cities)
+            if (!cities.includes(name)){    
+                cities.push(name)
+                localStorage
+                    .setItem("cities",
+                        JSON.stringify(cities)
+                    )
+                dispatch(cardListSlice.actions.addCard(res.data))
+            }
         }
     } catch ({message}) {
         console.log(message)

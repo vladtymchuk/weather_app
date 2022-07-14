@@ -13,7 +13,7 @@ function App() {
     const [cityI, setCityI] = React.useState<string>("")
 
     const addCityHandler = () => {
-        dispatch(addNewCityInfo(cityI))
+        dispatch(addNewCityInfo(cityI.trim().toLowerCase()))
         setCityI("")
     }
 
